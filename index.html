@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Karim Mansour - توقعات أفياتور</title>
+  
+  <style>
+    :root {
+      --primary: #1F2630;
+      --accent: #E01E5A;
+      --header: #2A0E5A;
+      --button: #28A745;
+      --text-light: #FFFFFF;
+      --text-muted: #B0BEC5;
+      --bar-bg: #37474F;
+      --green: #4CAF50;
+      --orange: #FF9800;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--primary);
+      color: var(--text-light);
+      line-height: 1.4;
+    }
+    
+    .header {
+      background: var(--header);
+      padding: 16px;
+      font-size: 1.5rem;
+      text-align: center;
+      font-weight: bold;
+    }
+    .title-bar {
+      background: var(--accent);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .title-bar h1 {
+      margin: 0;
+      font-size: 1.25rem;
+    }
+    .container {
+      padding: 16px;
+    }
+    
+    .prediction-box {
+      background: #2D3440;
+      border-radius: 8px;
+      padding: 24px;
+      min-height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    }
+    .prediction-value {
+      font-size: 5rem;
+      font-weight: bold;
+      color: var(--text-light);
+    }
+    
+    .button {
+      background: var(--button);
+      color: var(--text-light);
+      padding: 14px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      font-weight: bold;
+      width: 100%;
+      margin-bottom: 24px;
+      transition: background 0.2s;
+    }
+    .button:hover {
+      background: #218838;
+    }
+    
+    .stats {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+    .stat {
+      flex: 1 1 45%;
+      background: #263238;
+      padding: 16px;
+      border-radius: 8px;
+      min-width: 120px;
+    }
+    .stat h3 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+      color: var(--text-muted);
+    }
+    .stat .value {
+      font-size: 1.5rem;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+    .bar-bg {
+      width: 100%;
+      height: 8px;
+      background: var(--bar-bg);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      background: var(--green);
+      width: 0;
+      transition: width 0.5s ease;
+    }
+    .stat.orange .bar-fill {
+      background: var(--orange);
+    }
+    
+    .bottom {
+      background: #24303B;
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+    }
+    .bottom .label {
+      font-size: 0.9rem;
+      font-weight: bold;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+    .bottom .data {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .bottom .chip {
+      padding: 6px 12px;
+      background: #3E4A5E;
+      border-radius: 4px;
+      font-size: 0.875rem;
+    }
+    
+    .promo {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 16px;
+      padding: 10px;
+      background: rgba(0,0,0,0.2);
+      border-radius: 8px;
+    }
+    .promo a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+    .modal {
+      background: #1F2630;
+      padding: 24px;
+      border-radius: 8px;
+      text-align: center;
+      max-width: 360px;
+      width: 90%;
+      color: white;
+      border: 1px solid #37474F;
+    }
+    .modal h2 {
+      color: #E01E5A;
+      margin-bottom: 12px;
+      font-size: 1.4rem;
+    }
+    .modal p {
+      font-size: 1rem;
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+    .modal .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .modal .actions a {
+      background: #28A745;
+      color: white;
+      text-decoration: none;
+      padding: 12px;
+      border-radius: 5px;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+    .modal .actions a.secondary {
+      background: #E01E5A;
+    }
+    
+    @media (max-width: 600px) {
+      .prediction-value { font-size: 4rem; }
+      .header { font-size: 1.25rem; padding: 12px; }
+      .title-bar h1 { font-size: 1.1rem; }
+      .stats { flex-direction: column; }
+      .stat { flex: 1 1 100%; }
+      .button { font-size: 1rem; padding: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">بوت التوقعات 🚀</div>
+  <div class="title-bar"><h1>Karim Mansour - توقعات أفياتور</h1></div>
+  <div class="container">
+    <p style="text-align: center; font-size: 1.1rem; margin-bottom: 20px;">✨ استعمل الخوارزمية المتطورة ديالنا باش تعرف وقتاش الطيارة غادي طيح. 🚀</p>
+    
+    <div class="prediction-box">
+      <!-- Added dir="ltr" so the multiplier "x" stays on the correct side in Arabic view -->
+      <div class="prediction-value" id="predictionValue" dir="ltr">-</div>
+    </div>
+    
+    <button class="button" id="generateBtn">🔄 عطيني التوقع دابا ✨</button>
+    
+    <div class="stats">
+      <div class="stat">
+        <h3>نسبة النجاح</h3>
+        <div class="value" id="accuracy" dir="ltr">-</div>
+        <div class="bar-bg"><div class="bar-fill" id="accuracyBar"></div></div>
+      </div>
+      <div class="stat orange">
+        <h3>شحال تحط (MAD)</h3>
+        <div class="value" id="suggestedBet" dir="ltr">-</div>
+        <div class="bar-bg"><div class="bar-fill" id="betBar"></div></div>
+      </div>
+    </div>
+    
+    <div class="bottom">
+      <div class="label">خطة اللعب :</div>
+      <div class="data">
+        <span class="chip" id="cashoutChip">-</span>
+        <span class="chip" id="patternChip">-</span>
+        <span class="chip" id="timingChip">-</span>
+      </div>
+    </div>
+    
+    <div class="promo">
+      يلا حطيتي كتر من <strong>1000 درهم (MAD)</strong>، غادي تستافد من برنامج فيه نسبة نجاح ديال 95-98%.<br>
+      مورا ما تحط الفلوس، <a href="https://t.me/KarimMansour_bot">صيفط ليا ميساج</a>.
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <h2>⛔ حدك تما</h2>
+      <!-- The requested text changes are applied here (38 -> 100, 150 -> 180) -->
+      <p>وصلتي للحد ديال <strong>2 توقعات فابور</strong>.<br>تسجل من الرابط الرسمي ديالنا وحط على الأقل <strong>100 MAD</strong> باش تكمل وتلعب.<br><br>باش تستافد ديما 24/7 بلا حدود، حط <strong>180 MAD</strong> وتمتع بجميع المزايا ديال البوت!</p>
+      <div class="actions">
+        <a href="https://reffpa.com/L?tag=d_5329920m_21123c_&site=5329920&ad=21123&r=registration" target="_blank">✅ تسجل وحط الفلوس</a>
+        <a href="https://t.me/karimmansourprofitbot" class="secondary" target="_blank">✍️ هضر مع كريم</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const generateBtn = document.getElementById('generateBtn');
+    const predictionValue = document.getElementById('predictionValue');
+    const accuracyText = document.getElementById('accuracy');
+    const accuracyBar = document.getElementById('accuracyBar');
+    const suggestedBetText = document.getElementById('suggestedBet');
+    const betBar = document.getElementById('betBar');
+    const cashoutChip = document.getElementById('cashoutChip');
+    const patternChip = document.getElementById('patternChip');
+    const timingChip = document.getElementById('timingChip');
+    const modalOverlay = document.getElementById('modalOverlay');
+
+    // Translated arrays to Moroccan Darija
+    const patterns = ["تبينا طلعة فهاد الطرح", "السوق طالع هابط دابا", "اللعب غادي يكون مزيان ومستقر"];
+    const timings = ["نصيحة: لعب دابا", "نصيحة: تسنى الطرح الجاي", "نصيحة: تسنى 2 طروحة"];
+
+    let usageCount = 0;
+
+    function updatePrediction() {
+      usageCount++;
+      // Limit to 2 uses
+      if (usageCount > 2) {
+        modalOverlay.style.display = 'flex';
+        return;
+      }
+
+      // Generate Random Multiplier (Prediction)
+      const pred = (Math.random() * 2 + 1.1).toFixed(2);
+      predictionValue.textContent = pred + 'x';
+
+      // Generate Accuracy Rate (75% to 88%)
+      const acc = Math.floor(Math.random() * (88 - 75 + 1)) + 75;
+      accuracyText.textContent = acc + '%';
+      accuracyBar.style.width = acc + '%';
+
+      // Generate Bet Amount in MAD (Between 5 and 100 MAD)
+      const bet = Math.floor(Math.random() * 96) + 5;
+      suggestedBetText.textContent = bet + ' MAD';
+      betBar.style.width = (bet / 100 * 100) + '%';
+
+      // Update Strategy Chips
+      const cashoutValue = (pred * 0.8).toFixed(2);
+      cashoutChip.innerHTML = 'خرج فلوسك فـ <span dir="ltr">' + cashoutValue + 'x</span>';
+      patternChip.textContent = patterns[Math.floor(Math.random() * patterns.length)];
+      timingChip.textContent = timings[Math.floor(Math.random() * timings.length)];
+    }
+
+    generateBtn.addEventListener('click', updatePrediction);
+    
+    // Automatically generate first prediction when page loads
+    window.addEventListener('DOMContentLoaded', updatePrediction);
+  </script>
+</body>
+</html>
